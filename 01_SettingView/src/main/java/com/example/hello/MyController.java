@@ -13,4 +13,10 @@ public class MyController {
         // templates 폴터에서 "sub-page.html" 이름을 가지는 템플릿으로 연결
         return "sub-page";
     }
+
+    @GetMapping("")
+    public String wellcomePage(Model model){
+        model.addAttribute("data2", "87654321");
+        return "wellcome";
+    }
 }
