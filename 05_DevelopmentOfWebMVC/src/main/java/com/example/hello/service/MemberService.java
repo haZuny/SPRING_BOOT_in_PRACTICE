@@ -14,7 +14,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     //@Autowired  // 의존관계 주입
-    public MemberService(MemoryMemberRepository repository) {
+    public MemberService(MemberRepository repository) {
         this.memberRepository = repository;
     }
 
