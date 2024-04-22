@@ -5,11 +5,13 @@ import com.example.hello.repository.MemberRepository;
 import com.example.hello.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 //@Service    // 스프링 컨테이너가, 해당 객체를 서비스 객체로 인식, 스프링 빈 생성
+@Transactional  // 데이터 저장 및 변경시, commit?같은 기능
 public class MemberService {
     private final MemberRepository memberRepository;
 

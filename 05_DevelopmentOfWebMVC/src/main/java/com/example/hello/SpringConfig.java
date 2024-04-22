@@ -1,11 +1,9 @@
 package com.example.hello;
 
 import com.example.hello.controller.MemberController;
-import com.example.hello.repository.JdbcMemberRepository;
-import com.example.hello.repository.JdbcTemplateMemberRepository;
-import com.example.hello.repository.MemberRepository;
-import com.example.hello.repository.MemoryMemberRepository;
+import com.example.hello.repository.*;
 import com.example.hello.service.MemberService;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +12,18 @@ import javax.sql.DataSource;
 
 @Configuration  // @Bean을 사용하는 클래스는, Configuration 클래스로 등록 해주어야함
 public class SpringConfig {
-    private DataSource dataSource;
+//    private DataSource dataSource;
+//
+//    @Autowired
+//    public SpringConfig(DataSource dataSource) {
+//        this.dataSource = dataSource;
+//    }
+
+    private EntityManager em;
 
     @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public SpringConfig(EntityManager em) {
+        this.em = em;
     }
 
     @Bean
@@ -30,6 +35,8 @@ public class SpringConfig {
     public MemberRepository memberRepository() {
         // return new MemoryMemberRepository();
         //return new JdbcMemberRepository(dataSource);
-        return new JdbcTemplateMemberRepository(dataSource);
+//        return new JdbcTemplateMemberRepository(dataSource);
+        return new JpaMemberRepository(em);
+
     }
 }
