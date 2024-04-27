@@ -10,11 +10,11 @@ public interface UserRepository {
     User addUser(User user);
 
     // 사용자 삭제
-    Optional<User> deleteUser(User user);
+    Optional<User> deleteById(String id);
 
     // 사용자 id로 찾기
     Optional<User> findById(long id);
-    
+
     // 모든 사용자 리스트 조회
     List<User> findAll();
 
