@@ -1,4 +1,4 @@
-package com.watch_collector.hajun.repository.user;
+package com.watch_collector.hajun.repository;
 
 import com.watch_collector.hajun.domain.User;
 

@@ -1,4 +1,4 @@
-package com.watch_collector.hajun.repository.user;
+package com.watch_collector.hajun.repository;
 
 import com.watch_collector.hajun.domain.User;
 import org.junit.jupiter.api.AfterEach;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class MemoryUserRepositoryTest {
+public class UserRepositoryTest {
 
     // MemoryUserRepository
     UserRepository repository = new MemoryUserRepository();
