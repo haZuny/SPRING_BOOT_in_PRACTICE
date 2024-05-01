@@ -13,7 +13,7 @@ public interface UserRepository {
     Optional<User> deleteById(String id);
 
     // 사용자 id로 찾기
-    Optional<User> findById(long id);
+    Optional<User> findById(String id);
 
     // 모든 사용자 리스트 조회
     List<User> findAll();

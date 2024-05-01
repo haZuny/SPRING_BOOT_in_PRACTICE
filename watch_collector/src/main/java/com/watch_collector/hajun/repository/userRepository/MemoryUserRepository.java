@@ -20,16 +20,24 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public Optional<User> deleteById(String id) {
         Optional<User> optional = Optional.empty();
-        return Optional.empty();
+        try {
+            optional = Optional.of(store.get(id));
+            store.remove(id);
+        } catch (Exception e){}
+        return optional;
     }
 
     @Override
-    public Optional<User> findById(long id) {
-        return Optional.empty();
+    public Optional<User> findById(String id) {
+        Optional<User> optional = Optional.empty();
+        try {
+            optional = Optional.of(store.get(id));
+        } catch (Exception e){}
+        return optional;
     }
 
     @Override
     public List<User> findAll() {
-        return null;
+        return new ArrayList<>(store.values());
     }
 }
