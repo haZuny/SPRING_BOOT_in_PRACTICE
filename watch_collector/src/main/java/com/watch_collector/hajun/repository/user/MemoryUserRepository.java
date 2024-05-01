@@ -1,4 +1,4 @@
-package com.watch_collector.hajun.repository.userRepository;
+package com.watch_collector.hajun.repository.user;
 
 import com.watch_collector.hajun.domain.User;
 import org.springframework.stereotype.Repository;
@@ -39,5 +39,9 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    public void removeAllUser(){
+        store.clear();
     }
 }

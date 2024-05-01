@@ -1,4 +1,4 @@
-package com.watch_collector.hajun.repository.userRepository;
+package com.watch_collector.hajun.repository.user;
 
 import com.watch_collector.hajun.domain.User;
 
@@ -17,6 +17,9 @@ public interface UserRepository {
 
     // 모든 사용자 리스트 조회
     List<User> findAll();
+
+    // 모든 사용자 삭제
+    void removeAllUser();
 
 
 }
