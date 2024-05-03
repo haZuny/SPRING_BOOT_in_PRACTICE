@@ -36,8 +36,8 @@ public class UserServiceTest {
     @Test
     public void 회원가입_중복(){
         // Given
-        User newUser1 = new User("temp_id1", "temp_pw1");
-        User newUser2 = new User("temp_id2", "temp_pw2");
+        User newUser1 = new User("temp_id", "temp_pw1");
+        User newUser2 = new User("temp_id", "temp_pw2");
         // When
         service.join(newUser1);
         boolean isSuccess = service.join(newUser2);
