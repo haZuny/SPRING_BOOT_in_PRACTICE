@@ -1,6 +1,7 @@
 package com.watch_collector.hajun.service;
 
 import com.watch_collector.hajun.domain.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,11 @@ import java.util.Optional;
 public class UserServiceTest {
 
     UserService service = new UserService();
+
+    @AfterEach
+    public void after_each(){
+        service.resetAllUser();
+    }
 
     // 회원 가입
     @Test

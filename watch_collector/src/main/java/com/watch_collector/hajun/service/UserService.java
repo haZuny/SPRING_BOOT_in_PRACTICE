@@ -16,12 +16,19 @@ public class UserService {
     // 회원가입
         // 동일한 아이디가 있으면 회원가입 불가
     public boolean join(User user){
+        if (repository.findById(user.getId()).isPresent())  return false;
+        repository.addUser(user);
         return true;
     }
 
     // 회원 탈퇴
+        // 존재하지 않는 아이디 처리
     public boolean withdraw(User user){
-        return true;
+        if (repository.findById(user.getId()).isPresent()){
+            repository.deleteById(user.getId());
+            return true;
+        }
+        return false;
     }
 
     // 아이디로 회원 조회
@@ -34,5 +41,8 @@ public class UserService {
         return repository.findAll();
     }
 
-
+    // 초기화
+    public void resetAllUser(){
+        repository.removeAllUser();
+    }
 }
