@@ -2,6 +2,7 @@ package com.watch_collector.hajun.repository;
 
 import com.watch_collector.hajun.domain.User;
 import com.watch_collector.hajun.domain.Watch;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
@@ -11,10 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class WatchRepositoryTest {
-    WatchRepository repository;
+    WatchRepository repository = new MemoryWatchRepository();
 
     Watch generateWatch(String userId){
         return new Watch(userId, "model", 38, "auto", 44, "Mineral", new ArrayList<>());
+    }
+
+    @AfterEach
+    public void after_each(){
+        repository.removeAllWatches();
     }
 
     // 시계 추가
@@ -58,7 +64,7 @@ public class WatchRepositoryTest {
         List<Watch> list2 = repository.findByUser(userId2);
         // Then
         Assertions.assertEquals(3, list1.size());
-        Assertions.assertEquals(2, list1.size());
+        Assertions.assertEquals(2, list2.size());
     }
 
     // 모든 시계 목록 반환
@@ -105,7 +111,7 @@ public class WatchRepositoryTest {
         // Then
         Assertions.assertTrue(result);
         Assertions.assertEquals(1, repository.getAllWatches().size());
-        Assertions.assertNull(repository.findById(watch1.getId()));
+        Assertions.assertNull(repository.findById(watch1.getId()).orElse(null));
     }
     // 특정 User의 시계들 제거
     @Test

@@ -2,11 +2,15 @@ package com.watch_collector.hajun.repository;
 
 import com.watch_collector.hajun.domain.User;
 import com.watch_collector.hajun.domain.Watch;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface WatchRepository {
+
+
     // 시계 추가
     Watch addWatch(Watch watch);
 
