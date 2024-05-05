@@ -1,5 +1,7 @@
 package com.watch_collector.hajun.domain;
 
+import java.util.List;
+
 public class Watch {
     int id;
     String userId;
@@ -9,17 +11,24 @@ public class Watch {
     String movement;
     int lugToLug;
     String glass;
-    // function
+    List<String> function;
 
-    
-    public Watch(int id, String userId, String model, int caseSize, String movement, int lugToLug, String glass) {
-        this.id = id;
+    public Watch(String userId, String model, int caseSize, String movement, int lugToLug, String glass, List<String> function) {
         this.userId = userId;
         this.model = model;
         this.caseSize = caseSize;
         this.movement = movement;
         this.lugToLug = lugToLug;
         this.glass = glass;
+        this.function = function;
+    }
+
+    public List<String> getFunction() {
+        return function;
+    }
+
+    public void setFunction(List<String> function) {
+        this.function = function;
     }
 
     public int getId() {
