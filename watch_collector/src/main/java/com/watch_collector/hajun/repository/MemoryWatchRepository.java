@@ -45,7 +45,7 @@ public class MemoryWatchRepository implements WatchRepository {
             store.put(watch.getId(), watch);
             return Optional.of(watch);
         }
-        return Optional.empty();
+        else return Optional.empty();
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.watch_collector.hajun.domain;
 import java.util.List;
 
 public class Watch {
-    int id;
+    int id = Integer.MIN_VALUE;
     String userId;
     // 이미지
     String model;
@@ -15,6 +15,15 @@ public class Watch {
 
     public Watch(String userId, String model, int caseSize, String movement, int lugToLug, String glass, List<String> function) {
         this.userId = userId;
+        this.model = model;
+        this.caseSize = caseSize;
+        this.movement = movement;
+        this.lugToLug = lugToLug;
+        this.glass = glass;
+        this.function = function;
+    }
+
+    public Watch(String model, int caseSize, String movement, int lugToLug, String glass, List<String> function) {
         this.model = model;
         this.caseSize = caseSize;
         this.movement = movement;
