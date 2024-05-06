@@ -1,6 +1,7 @@
 package com.watch_collector.hajun.service;
 
 import com.watch_collector.hajun.domain.User;
+import com.watch_collector.hajun.domain.Watch;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import java.util.Optional;
 public class UserServiceTest {
 
     UserService service = new UserService();
+    WatchService watchService = new WatchService();
 
     @AfterEach
     public void after_each(){
@@ -55,6 +57,7 @@ public class UserServiceTest {
         User find = service.findUser("temp_id").orElse(null);
         boolean isSuccess = service.withdraw(find);
         // Then
+        Assertions.assertEquals(0, service.watchesByUser(find).size());
         Assertions.assertTrue(isSuccess);
         Assertions.assertNull(service.findUser("temp_id").orElse(null));
     }
