@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/user/new/" method="post">
+        <label for="id">ID</label>
+        <input type="text" id="id" name="id">
+        <br>
+        <label for="pw">PW</label>
+        <input type="text" id="pw" name="pw"> <br>
+        <button type="submit" value="회원가입">회원가입</button>
+    </form>
+
+
+    <div th:each="user: ${userList}">
+        <span th:text="${user.id}"></span>
+    </div>
+</body>
+</html>
