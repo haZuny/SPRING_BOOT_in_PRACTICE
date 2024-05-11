@@ -16,7 +16,7 @@
 
 
     <div th:each="user: ${userList}">
-        <span th:text="${user.id}"></span>
+        <a th:href="@{/user/{userId}/watches/(userId=${user.id})}" th:text="${user.id}"></a><br>
     </div>
 </body>
 </html>
