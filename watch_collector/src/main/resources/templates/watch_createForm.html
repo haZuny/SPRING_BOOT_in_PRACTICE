@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/{userId}/watch/new/(userId=${userId})}" method="post">
+<!--        이미지, 기능 추가-->
+        <label for="model">Model code</label><input type="text" name="model" id="model"><br>
+        <label for="caseSize">Case size</label><input type="text" name="caseSize" id="caseSize"><br>
+        <label for="movement">Movement</label><input type="text" name="movement" id="movement"><br>
+        <label for="lugToLug">Lug to lug</label><input type="text" name="lugToLug" id="lugToLug"><br>
+        <label for="glass">Glass</label><input type="text" name="glass" id="glass"><br>
+        <button type="submit">Add Watch</button>
+
+    </form>
+</body>
+</html>

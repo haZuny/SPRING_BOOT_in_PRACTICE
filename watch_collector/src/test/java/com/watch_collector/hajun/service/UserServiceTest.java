@@ -47,6 +47,18 @@ public class UserServiceTest {
         Assertions.assertFalse(isSuccess);
         Assertions.assertEquals(Optional.empty(), service.findUser("temp_id2"));
     }
+    @Test
+    public void 회원가입_공백(){
+        // Given
+        User user1 = new User("", "1234");
+        User user2 = new User("user2", "");
+        // When
+        boolean res1 = service.join(user1);
+        boolean res2 = service.join(user2);
+        // Then
+        Assertions.assertFalse(res1);
+        Assertions.assertFalse(res2);
+    }
 
     // 회원 탈퇴
     @Test
@@ -94,6 +106,46 @@ public class UserServiceTest {
         Optional<User> op = service.findUser("temp_id");
         // Then
         Assertions.assertNull(op.orElse(null));
+    }
+
+    // 유효성 검증
+    @Test
+    public void 유효성검증_일치(){
+        // Given
+        String id = "user1";
+        String pw = "1234";
+        User user = new User(id, pw);
+        Assertions.assertTrue(service.join(user));
+        // When
+        boolean result = service.checkIdPw(id, pw);
+        // Then
+        Assertions.assertTrue(result);
+    }
+    @Test
+    public void 유효성검증_불일치(){
+        // Given
+        String id = "user1";
+        String pw = "1234";
+        User user = new User(id, pw);
+        Assertions.assertTrue(service.join(user));
+        // When
+        String falsePw = "2345";
+        boolean result = service.checkIdPw(id, falsePw);
+        // Then
+        Assertions.assertFalse(result);
+    }
+    @Test
+    public void 유효성검증_없는아이디(){
+        // Given
+        String id = "user1";
+        String pw = "1234";
+        User user = new User(id, pw);
+        Assertions.assertTrue(service.join(user));
+        // When
+        String falseId = "1234";
+        boolean result = service.checkIdPw(falseId, pw);
+        // Then
+        Assertions.assertFalse(result);
     }
 
     // 전체 회원 리스트

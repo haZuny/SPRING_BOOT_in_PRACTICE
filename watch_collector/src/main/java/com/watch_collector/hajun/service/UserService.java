@@ -4,6 +4,7 @@ import com.watch_collector.hajun.domain.User;
 import com.watch_collector.hajun.domain.Watch;
 import com.watch_collector.hajun.repository.MemoryUserRepository;
 import com.watch_collector.hajun.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,12 +14,17 @@ import java.util.Optional;
 @Service
 public class UserService {
     private UserRepository repository = new MemoryUserRepository();
+    @Autowired
     private WatchService watchService = new WatchService();
+
+
 
     // 회원가입
         // 동일한 아이디가 있으면 회원가입 불가
+        // id, pw 공백 가입 불가
     public boolean join(User user){
-        if (repository.findById(user.getId()).isPresent())  return false;
+        if (user.getId().isEmpty() || user.getPw().isEmpty()) return false;
+        else if (repository.findById(user.getId()).isPresent())  return false;
         repository.addUser(user);
         return true;
     }
@@ -49,6 +55,12 @@ public class UserService {
     // 회원 목록 조회
     public List<User> findAllUser(){
         return repository.findAll();
+    }
+
+    // 유효성 검증
+    public boolean checkIdPw(String id, String pw){
+        Optional<User> user = findUser(id);
+        return user.isPresent() && user.get().getPw().equals(pw);
     }
 
     // 초기화

@@ -8,11 +8,20 @@
     <form>
         <label for="id">ID</label><input id="id" name="id"><br>
         <label for="pw">PW</label><input id="pw" name="pw">
-        <button type="submit" formaction="">회원 탈퇴</button>
-        <button type="submit" formaction="">시계 추가</button>
+        <button type="submit" >회원 탈퇴</button>
+        <button type="submit" th:formaction="@{/{userId}/watch/new/(userId=${userId})}">시계 추가</button>
+
 
         <div th:each="watch: ${watchList}">
-            <span th:text="${watch.model}"></span>
+            <br>
+            <div th:text="'Model code: '+${watch.model}"></div>
+            <div th:text="'Case size: '+${watch.caseSize}"></div>
+            <div th:text="'Movement: '+${watch.movement}"></div>
+            <div th:text="'Lug to lug: '+${watch.lugToLug}"></div>
+            <div th:text="'Glass: '+${watch.glass}"></div>
+            <div><a>수정</a></div>
+            <div><a>삭제</a></div>
+            <br>
         </div>
     </form>
 
