@@ -8,22 +8,24 @@
     <form>
         <label for="id">ID</label><input id="id" name="id"><br>
         <label for="pw">PW</label><input id="pw" name="pw">
-        <button type="submit" >회원 탈퇴</button>
+        <button type="submit" th:formaction="@{/user/{userId}/delete/(userId=${userId})}" formmethod="post">회원 탈퇴</button>
         <button type="submit" th:formaction="@{/{userId}/watch/new/(userId=${userId})}">시계 추가</button>
 
 
+        <br>
         <div th:each="watch: ${watchList}">
-            <br>
-            <div th:text="'Model code: '+${watch.model}"></div>
-            <div th:text="'Case size: '+${watch.caseSize}"></div>
-            <div th:text="'Movement: '+${watch.movement}"></div>
-            <div th:text="'Lug to lug: '+${watch.lugToLug}"></div>
+        <div th:text="'Model code: '+${watch.model}"></div>
+        <div th:text="'Case size: '+${watch.caseSize}"></div>
+        <div th:text="'Movement: '+${watch.movement}"></div>
+        <div th:text="'Lug to lug: '+${watch.lugToLug}"></div>
             <div th:text="'Glass: '+${watch.glass}"></div>
-            <div><a>수정</a></div>
-            <div><a>삭제</a></div>
+            <button type="submit" th:formaction="@{/{userId}watch/{watchId}/update/(userId=${userId}, watchId=${watch.id})}">수정</button>
+            <button type="submit" th:formaction="@{/{userId}/watch/{watchId}/delete/(userId=${userId}, watchId=${watch.id})}" formmethod="post">삭제</button>
             <br>
         </div>
     </form>
+
+
 
 
 </body>

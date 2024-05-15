@@ -38,6 +38,7 @@ public class WatchController {
     @GetMapping("/{userId}/watch/new/")
     public String addWatch_get(@PathVariable String userId, Model model, @RequestParam String id, @RequestParam String pw){
         model.addAttribute("userId", userId);
+        model.addAttribute("state", "ADD");
 
         if (userService.checkIdPw(id, pw))
             return "watch_createForm.html";
@@ -56,5 +57,51 @@ public class WatchController {
         }
         return "redirect:/user/"+userId+"/watches/";
     }
+
+    // 시계 삭제
+    @PostMapping("/{userId}/watch/{watchId}/delete/")
+    public String deleteWatch(@PathVariable String userId, @PathVariable int watchId, Model mvc_model, @RequestParam String id, @RequestParam String pw){
+        Optional<Watch> watch = watchService.findById(watchId);
+        if (userService.checkIdPw(id, pw) && watch.isPresent()){
+            watchService.deleteWatch(watch.get());
+            System.out.println("삭제됨");
+        }
+        else{
+
+        }
+        return "redirect:/user/"+userId+"/watches/";
+    }
+
+    // 시계 수정
+    @GetMapping("/{userId}watch/{watchId}/update/")
+    public String updateWatch_get(@PathVariable String userId, @PathVariable int watchId, Model mvc_moded, @RequestParam String id, @RequestParam String pw){
+        Optional<Watch> watch = watchService.findById(watchId);
+        if (watch.isPresent() && userId.equals(id) && userService.checkIdPw(id, pw)){
+            mvc_moded.addAttribute("watch", watch.get());
+            mvc_moded.addAttribute("state", "UPDATE");
+            return "watch_createForm.html";
+        }
+        return "redirect:/user/"+userId+"/watches/";
+    }
+    @PostMapping("/{userId}watch/{watchId}/update/")
+    public String updateWatch_post(@PathVariable String userId, @PathVariable int watchId,
+                                @RequestParam String model, @RequestParam int caseSize, @RequestParam String movement,
+                                @RequestParam int lugToLug, @RequestParam String glass){
+
+        Optional<Watch> watch = watchService.findById(watchId);
+
+        if (watch.isPresent()){
+            Watch watchObj = watch.get();
+            watchObj.setModel(model);
+            watchObj.setCaseSize(caseSize);
+            watchObj.setMovement(movement);
+            watchObj.setLugToLug(lugToLug);
+            watchObj.setGlass(glass);
+            watchService.updateWatch(watchObj);
+            return "redirect:/user/"+userId+"/watches/";
+        }
+        return "redirect:/user/"+userId+"/watches/";
+    }
+
 
 }
