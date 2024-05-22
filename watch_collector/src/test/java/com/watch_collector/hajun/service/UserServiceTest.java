@@ -5,16 +5,25 @@ import com.watch_collector.hajun.domain.Watch;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.swing.text.html.Option;
 import java.security.Provider;
 import java.util.List;
 import java.util.Optional;
 
+@SpringBootTest
 public class UserServiceTest {
 
-    UserService service = new UserService();
-    WatchService watchService = new WatchService();
+    UserService service;
+    WatchService watchService;
+
+    @Autowired
+    public UserServiceTest(UserService userService, WatchService watchService) {
+        this.service = userService;
+        this.watchService = watchService;
+    }
 
     @AfterEach
     public void after_each(){

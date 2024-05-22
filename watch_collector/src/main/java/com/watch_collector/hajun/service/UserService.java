@@ -2,6 +2,7 @@ package com.watch_collector.hajun.service;
 
 import com.watch_collector.hajun.domain.User;
 import com.watch_collector.hajun.domain.Watch;
+import com.watch_collector.hajun.repository.JdbcUserRepository;
 import com.watch_collector.hajun.repository.MemoryUserRepository;
 import com.watch_collector.hajun.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,22 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private UserRepository repository = new MemoryUserRepository();
+    private UserRepository repository;
     @Autowired
     private WatchService watchService = new WatchService();
+
+    @Autowired
+    public UserService(JdbcUserRepository repository) {
+        this.repository = repository;
+    }
+
+
 
 
 
     // 회원가입
-        // 동일한 아이디가 있으면 회원가입 불가
-        // id, pw 공백 가입 불가
+    // 동일한 아이디가 있으면 회원가입 불가
+    // id, pw 공백 가입 불가
     public boolean join(User user){
         if (user.getId().isEmpty() || user.getPw().isEmpty()) return false;
         else if (repository.findById(user.getId()).isPresent())  return false;
