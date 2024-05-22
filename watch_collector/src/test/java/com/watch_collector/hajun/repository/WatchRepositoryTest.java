@@ -5,14 +5,24 @@ import com.watch_collector.hajun.domain.Watch;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
+@SpringBootTest
 public class WatchRepositoryTest {
-    WatchRepository repository = new MemoryWatchRepository();
+    WatchRepository repository;
+
+    @Autowired
+    public WatchRepositoryTest(JdbcWatchRepository repository) {
+        this.repository = repository;
+    }
 
     Watch generateWatch(String userId){
         return new Watch(userId, "model", 38, "auto", 44, "Mineral", new ArrayList<>());
@@ -27,7 +37,7 @@ public class WatchRepositoryTest {
     @Test
     public void 시계추가(){
         // Given
-        Watch watch = generateWatch("user1");
+        Watch watch = generateWatch("1234");
         // When
         Watch added = repository.addWatch(watch);
         // Then
@@ -39,7 +49,7 @@ public class WatchRepositoryTest {
     @Test
     public void 시계찾기_id(){
         // Given
-        Watch watch = repository.addWatch(generateWatch("user1"));
+        Watch watch = repository.addWatch(generateWatch("1234"));
         int watchId = watch.getId();
         // When
         Watch searched = repository.findById(watchId).orElse(null);
@@ -52,8 +62,8 @@ public class WatchRepositoryTest {
     @Test
     public void 시계목록조회_USer(){
         // Given
-        String userId1 = "user1";
-        String userId2 = "user2";
+        String userId1 = "1234";
+        String userId2 = "temp_id";
         repository.addWatch(generateWatch(userId1));
         repository.addWatch(generateWatch(userId1));
         repository.addWatch(generateWatch(userId1));
@@ -71,11 +81,11 @@ public class WatchRepositoryTest {
     @Test
     public void 모든시계목록(){
         // Given
-        repository.addWatch(generateWatch("user1"));
-        repository.addWatch(generateWatch("user1"));
-        repository.addWatch(generateWatch("user2"));
-        repository.addWatch(generateWatch("user2"));
-        repository.addWatch(generateWatch("user3"));
+        repository.addWatch(generateWatch("1234"));
+        repository.addWatch(generateWatch("1234"));
+        repository.addWatch(generateWatch("temp_id"));
+        repository.addWatch(generateWatch("temp_id"));
+        repository.addWatch(generateWatch("temp_id1"));
         // When
         List<Watch> list = repository.getAllWatches();
         // Then
@@ -102,8 +112,8 @@ public class WatchRepositoryTest {
     @Test
     public void 시계삭제(){
         // Given
-        Watch watch1 = generateWatch("user1");
-        Watch watch2 = generateWatch("user1");
+        Watch watch1 = generateWatch("1234");
+        Watch watch2 = generateWatch("1234");
         watch1 = repository.addWatch(watch1);
         watch2 = repository.addWatch(watch2);
         // When
@@ -117,8 +127,8 @@ public class WatchRepositoryTest {
     @Test
     public void 시계삭제_User(){
         // Given
-        String userId1 = "user1";
-        String userId2 = "user2";
+        String userId1 = "1234";
+        String userId2 = "temp_id";
         repository.addWatch(generateWatch(userId1));
         repository.addWatch(generateWatch(userId1));
         repository.addWatch(generateWatch(userId1));
@@ -137,8 +147,8 @@ public class WatchRepositoryTest {
     @Test
     public void 모든시계제거(){
         // Given
-        String userId1 = "user1";
-        String userId2 = "user2";
+        String userId1 = "1234";
+        String userId2 = "temp_id";
         repository.addWatch(generateWatch(userId1));
         repository.addWatch(generateWatch(userId1));
         repository.addWatch(generateWatch(userId1));

@@ -12,7 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class WatchServiceTest {
-    WatchService watchService = new WatchService();
+    WatchService watchService;
+
+    public WatchServiceTest(WatchService watchService) {
+        this.watchService = watchService;
+    }
 
     Watch generateWatch(){
         return new Watch("model", 38, "auto", 44, "Mineral", new ArrayList<>());

@@ -3,6 +3,7 @@ package com.watch_collector.hajun.service;
 import com.watch_collector.hajun.domain.User;
 import com.watch_collector.hajun.domain.Watch;
 import com.watch_collector.hajun.repository.JdbcUserRepository;
+import com.watch_collector.hajun.repository.JdbcWatchRepository;
 import com.watch_collector.hajun.repository.MemoryUserRepository;
 import com.watch_collector.hajun.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,12 @@ import java.util.Optional;
 public class UserService {
     private UserRepository repository;
     @Autowired
-    private WatchService watchService = new WatchService();
+    private WatchService watchService;
 
     @Autowired
-    public UserService(JdbcUserRepository repository) {
+    public UserService(JdbcUserRepository repository, WatchService service) {
         this.repository = repository;
+        this.watchService = service;
     }
 
 

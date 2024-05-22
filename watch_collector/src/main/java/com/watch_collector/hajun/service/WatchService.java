@@ -2,8 +2,10 @@ package com.watch_collector.hajun.service;
 
 import com.watch_collector.hajun.domain.User;
 import com.watch_collector.hajun.domain.Watch;
+import com.watch_collector.hajun.repository.JdbcWatchRepository;
 import com.watch_collector.hajun.repository.MemoryWatchRepository;
 import com.watch_collector.hajun.repository.WatchRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +13,12 @@ import java.util.Optional;
 
 @Service
 public class WatchService {
-    WatchRepository repository = new MemoryWatchRepository();
+    WatchRepository repository;
 
+    @Autowired
+    public WatchService(JdbcWatchRepository repository) {
+        this.repository = repository;
+    }
 
     // 시계 추가
     public Watch addWatch(Watch watch, User user){
