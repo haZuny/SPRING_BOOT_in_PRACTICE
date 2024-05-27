@@ -31,6 +31,25 @@ public class SecurityConfig {
                     .anyRequest().authenticated();
         });
 
+        // 커스텀 로그인 페이지 설정
+        /**
+         * loginPage(): formLogin 설정
+         *      formLogin 동작 방식:
+         *          1. 권한이 필요한 페이지 접근
+         *          2. 로그인 페이지로 redirect
+         *          3. 로그인 정보 post
+         *          4. 해당 정보가 일치하면, 인증
+         *  loginPage: 커스텀 로그인 페이지 설정
+         *  loginProcessingURL: 로그인 정보를 받을 url(form action)
+         */
+        http.formLogin((auth)->{
+            auth.loginPage("/login")
+                    .loginProcessingUrl("/loginProc")
+                    .permitAll();
+        });
+
+        http.csrf((auth)->auth.disable());
+
         return http.build();
     }
 
