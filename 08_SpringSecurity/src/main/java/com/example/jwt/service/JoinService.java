@@ -1,7 +1,7 @@
 package com.example.jwt.service;
 
 import com.example.jwt.dto.JoinDto;
-import com.example.jwt.entity.UserEntiry;
+import com.example.jwt.entity.UserEntity;
 import com.example.jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +22,7 @@ public class JoinService {
 
     public void joinProcess(JoinDto joinDto){
 
-        UserEntiry data = new UserEntiry();
+        UserEntity data = new UserEntity();
 
         data.setUsername(joinDto.getUsername());
         data.setPassword(bCryptPasswordEncoder.encode(joinDto.getPassword()));

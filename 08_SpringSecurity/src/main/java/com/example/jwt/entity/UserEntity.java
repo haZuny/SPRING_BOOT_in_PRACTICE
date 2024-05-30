@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class UserEntiry {
+public class UserEntity {
     @Id // 기본키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 DB에 위임
     private int id;
