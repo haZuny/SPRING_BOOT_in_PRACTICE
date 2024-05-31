@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity  // Spring Security 활성화
+@EnableWebSecurity  // Spring Security 인가 활성화
 public class SecurityConfig {
 
     @Bean

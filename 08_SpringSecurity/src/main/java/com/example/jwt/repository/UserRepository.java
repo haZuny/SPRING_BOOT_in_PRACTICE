@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {    // JPA Repo 사용<entity객체, pk 자료형>
 
-    boolean existByUsername(String username);
-    public UserEntity findByUsername(String username);
+    boolean existsByUsername(String username);
+    UserEntity findByUsername(String username);
 }
