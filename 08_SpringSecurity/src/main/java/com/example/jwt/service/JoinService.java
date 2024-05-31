@@ -29,6 +29,5 @@ public class JoinService {
         data.setRole("ROLE_ADMIN");
 
         userRepository.save(data);
-
     }
 }
