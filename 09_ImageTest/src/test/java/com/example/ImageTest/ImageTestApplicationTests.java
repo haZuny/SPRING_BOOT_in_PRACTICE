@@ -1,10 +1,10 @@
-package com.example.jwt;
+package com.example.ImageTest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JwtApplicationTests {
+class ImageTestApplicationTests {
 
 	@Test
 	void contextLoads() {

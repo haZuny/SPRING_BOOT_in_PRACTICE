@@ -1,13 +1,13 @@
-package com.example.jwt;
+package com.example.ImageTest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JwtApplication {
+public class ImageTestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JwtApplication.class, args);
+		SpringApplication.run(ImageTestApplication.class, args);
 	}
 
 }
