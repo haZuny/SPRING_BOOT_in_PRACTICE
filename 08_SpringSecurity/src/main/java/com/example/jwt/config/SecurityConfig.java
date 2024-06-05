@@ -49,7 +49,8 @@ public class SecurityConfig {
                     .permitAll();
         });
 
-        http.csrf((auth)->auth.disable());
+//        http.csrf((auth)->auth.disable());
+
 
         // 다중 로그인 설정
         /**
