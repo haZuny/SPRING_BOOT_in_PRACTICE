@@ -2,15 +2,16 @@ package com.example.ImageTest.controller;
 
 import com.example.ImageTest.Service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,9 +28,16 @@ public class ImageController {
     public String getViewPage(Model model){
         Optional<String> imgPath = imageService.findOne();
         if (imgPath.isPresent()){
-            model.addAttribute("img", imgPath.get());
+            String[] filenames = imgPath.get().split("\\\\");
+            model.addAttribute("img", filenames[filenames.length-1]);
         }
         return "view";
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:" + "C:\\Users\\gkwns\\Hajun\\Spring-Boot-Start\\09_ImageTest\\src\\main\\resources\\static\\imgs\\" + filename);
     }
 
     @PostMapping("/save")

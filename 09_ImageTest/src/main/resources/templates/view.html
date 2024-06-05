@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <img th:src="@{${img}}" th:if="${img} != null">
+    <img th:src="'/images/'+${img}" th:if="${img} != null">
     <div th:unless="${img} != null">이미지 없음</div>
 </body>
 </html>

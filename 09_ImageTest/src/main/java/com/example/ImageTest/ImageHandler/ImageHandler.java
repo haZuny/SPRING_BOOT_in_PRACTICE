@@ -8,11 +8,9 @@ import java.io.IOException;
 public class ImageHandler {
     public String save(MultipartFile image) throws IOException {
         String fileName = getOriginName(image);
-        String fullPathName = "C:\\Users\\gkwns\\hajunFolder\\SpringBoot\\Spring-Boot-Start\\" +
-                "09_ImageTest\\src\\main\\resources\\static\\imgs\\" + fileName;
-        String savedName = "imgs\\"+fileName;
+        String fullPathName = "C:\\Users\\gkwns\\Hajun\\Spring-Boot-Start\\09_ImageTest\\src\\main\\resources\\static\\imgs\\" + fileName;
         image.transferTo(new File(fullPathName));
-        return savedName;
+        return fullPathName;
     }
 
     private String getOriginName(MultipartFile image){
