@@ -1,6 +1,9 @@
 package com.example.jwt.config;
 
+import com.example.jwt.jwt.JWTFilter;
+import com.example.jwt.jwt.JWTUtil;
 import com.example.jwt.jwt.LoginFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +22,9 @@ public class SecurityConfig {
 
 
     private final AuthenticationConfiguration authenticationConfiguration;
+
+    @Autowired
+    JWTUtil jwtUtil;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
         this.authenticationConfiguration = authenticationConfiguration;
@@ -54,7 +60,8 @@ public class SecurityConfig {
         });
 
         // 커스텀 필터 등록
-        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         // 세션 설정, 세션 정보를 저장하지 않음(jwt 토큰으로 대체 예정)
         http.sessionManagement(httpSecuritySessionManagementConfigurer -> {
