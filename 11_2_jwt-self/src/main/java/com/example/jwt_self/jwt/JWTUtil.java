@@ -1,6 +1,7 @@
 package com.example.jwt_self.jwt;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +13,13 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    private SecretKey secretKey;
+//    private SecretKey secretKey;
+    private final SecretKey secretKey;
 
     // 비밀키 값을 SecretKey 객체로 반환
     public JWTUtil(@Value("${spring.jwt.key}") String key) {
-        this.secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+//        this.secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        this.secretKey = Keys.password(key.toCharArray());
     }
 
     // 토큰 검증 - 아이디
