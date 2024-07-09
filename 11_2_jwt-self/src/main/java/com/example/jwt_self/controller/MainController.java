@@ -20,7 +20,7 @@ public class MainController {
         return "main page";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public String postLogin(){
         return "success";
     }
@@ -35,7 +35,7 @@ public class MainController {
 
     @GetMapping("/onlyuser")
     public String getOnlyuser(){
-        return "";
+        return "success";
     }
 
 }
