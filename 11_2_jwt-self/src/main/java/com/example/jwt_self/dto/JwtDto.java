@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JwtDto {
+    public JwtDto(){}
     public JwtDto(String authentication) {
         this.authentication = authentication;
     }
-    public JwtDto(){}
 
     String authentication;
 }

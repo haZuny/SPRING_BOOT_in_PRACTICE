@@ -33,25 +33,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         // request body GET
-        ServletInputStream inputStream;
-        String requestBody;
-        try {
-            inputStream = request.getInputStream();
-            requestBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Json data parsing
-        JwtDto jwtDto;
-        try {
-            jwtDto = objectMapper.readValue(requestBody, JwtDto.class);
-        } catch (JsonProcessingException e) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String token = jwtDto.getAuthentication();
+        String token = request.getHeader("Authentication");
 
         // 토큰 존재 여부 검증
         if (token == null || !token.startsWith("Bearer ")){
@@ -74,7 +56,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         customUserDetails.setRole(role);
         customUserDetails.setUsername(username);
             // 세션 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(username, null, customUserDetails.getAuthorities());
+        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         System.out.println("Success");

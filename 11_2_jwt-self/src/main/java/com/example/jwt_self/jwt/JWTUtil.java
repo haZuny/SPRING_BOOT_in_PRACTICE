@@ -24,8 +24,24 @@ public class JWTUtil {
 
     // 비밀키 값을 SecretKey 객체로 반환
     public JWTUtil(@Value("${spring.jwt.key}") String key) {
-//        this.secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
         this.secretKey = Keys.hmacShaKeyFor(key.getBytes());
+    }
+
+    // 토큰 생성
+    public String createJwt(String username, String role, int expiredMinute){
+        // iat, exp를 위한 Date 및 Calendar
+        Calendar expCalendar = Calendar.getInstance();
+        expCalendar.add(Calendar.MINUTE, Math.toIntExact(expiredMinute));
+        Date iatDate = new Date();
+        Date expDate = expCalendar.getTime();
+
+        return Jwts.builder()
+                .claim("username", username)
+                .claim("role", role)
+                .issuedAt(iatDate)
+                .expiration(expDate)
+                .signWith(secretKey)
+                .compact();
     }
 
     // 토큰 검증 - 아이디
@@ -55,22 +71,4 @@ public class JWTUtil {
         }
 
     }
-
-    // 토큰 생성
-    public String createJwt(String username, String role, int expiredMinute){
-        // iat, exp를 위한 Date 및 Calendar
-        Calendar expCalendar = Calendar.getInstance();
-        expCalendar.add(Calendar.MINUTE, Math.toIntExact(expiredMinute));
-        Date iatDate = new Date();
-        Date expDate = expCalendar.getTime();
-
-        return Jwts.builder()
-                .claim("username", username)
-                .claim("role", role)
-                .issuedAt(iatDate)
-                .expiration(expDate)
-                .signWith(secretKey)
-                .compact();
-    }
-
 }
