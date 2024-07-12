@@ -3,6 +3,7 @@ package com.example.jwt_self.config;
 import com.example.jwt_self.jwt.CustomUsernamePasswordAuthenticationFilter;
 import com.example.jwt_self.jwt.JWTUtil;
 import com.example.jwt_self.jwt.JwtVerificationFilter;
+import com.example.jwt_self.repository.RefreshRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class SecurityConfig {
     @Autowired
     JWTUtil jwtUtil;
 
+    @Autowired
+    RefreshRepository refreshRepository;
+
     // authManager Bean을 얻기 위한 authConfiguration 객체
     private final AuthenticationConfiguration authenticationConfiguration;
 
@@ -61,7 +65,7 @@ public class SecurityConfig {
         // 커스텀 필터 등록
             // 로그인 경로 설정 후, 로그인 필터 등록
         CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter
-                = new CustomUsernamePasswordAuthenticationFilter(authenticationManager(authenticationConfiguration), jwtUtil);
+                = new CustomUsernamePasswordAuthenticationFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository);
         customUsernamePasswordAuthenticationFilter.setFilterProcessesUrl("/signin");
         httpSecurity.addFilterAt(customUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
             // jwt 검증 필터 등록
@@ -70,7 +74,7 @@ public class SecurityConfig {
         
         // 경로별 인가 설정
         httpSecurity.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/", "/login", "/join", "/signin").permitAll()
+            auth.requestMatchers("/", "/login", "/join", "/signin", "/reissue").permitAll()
                     .requestMatchers("/onlyuser").hasRole("USER");
         });
 

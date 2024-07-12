@@ -3,14 +3,18 @@ package com.example.jwt_self.jwt;
 import com.example.jwt_self.dto.JwtDto;
 import com.example.jwt_self.dto.LoginDto;
 import com.example.jwt_self.entity.CustomUserDetails;
+import com.example.jwt_self.entity.RefreshEntity;
+import com.example.jwt_self.repository.RefreshRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +26,9 @@ import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.Ref;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -29,10 +36,13 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
 
     AuthenticationManager authenticationManager;
     JWTUtil jwtUtil;
+    RefreshRepository refreshRepository;
 
-    public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager
+            , JWTUtil jwtUtil, RefreshRepository refreshRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.refreshRepository = refreshRepository;
     }
 
     @Override
@@ -62,17 +72,55 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        // 토큰 생성
-        CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
-        String jwtToken = jwtUtil.createJwt(userDetails.getUsername(), userDetails.getRole(), 1);
+//        // 토큰 생성
+//        CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
+//        String jwtToken = jwtUtil.createJwt(userDetails.getUsername(), userDetails.getRole(), 1);
+//
+//
+//        // 토큰을 JSON 형태로 변경
+//        JwtDto jwtDto = new JwtDto("Bearer " + jwtToken);
+//        String jsonResponse = objectMapper.writeValueAsString(jwtDto);
+//
+//        // JSON 타입 객체 응답
+//        response.setContentType("application/json");
+//        response.getWriter().write(jsonResponse);
 
 
-        // 토큰을 JSON 형태로 변경
-        JwtDto jwtDto = new JwtDto("Bearer " + jwtToken);
-        String jsonResponse = objectMapper.writeValueAsString(jwtDto);
+        // Refresh token 구현
+        String username = authResult.getName();
+        String role = authResult.getAuthorities().stream().findAny().get().getAuthority();
 
-        // JSON 타입 객체 응답
-        response.setContentType("application/json");
-        response.getWriter().write(jsonResponse);
+        String accessToken = jwtUtil.createJwt("access", username, role, 1);
+        String refreshToken = jwtUtil.createJwt("refresh", username, role, 12*60);
+
+        addRefresh(username, refreshToken, 12*60);
+
+        response.setHeader("access", accessToken);
+        response.addCookie(createCookie("refresh", refreshToken));
+        response.setStatus(HttpStatus.OK.value());
+
+    }
+
+    protected void addRefresh(String username, String refresh, int expiredMinute){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, expiredMinute);
+        Date date = calendar.getTime();
+
+        RefreshEntity refreshEntity = new RefreshEntity();
+        refreshEntity.setUsername(username);
+        refreshEntity.setRefresh(refresh);
+        refreshEntity.setRefresh(date.toString());
+
+        refreshRepository.save(refreshEntity);
+    }
+
+
+    Cookie createCookie(String key, String value){
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(12*60*60); // 12h
+//        cookie.setSecure(true);
+//        cookie.setPath("/");
+        cookie.setHttpOnly(true);   //JS로 접근 불가, 탈취 위험 감소
+        return cookie;
     }
 }

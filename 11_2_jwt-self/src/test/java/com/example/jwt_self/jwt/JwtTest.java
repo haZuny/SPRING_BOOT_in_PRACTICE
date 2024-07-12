@@ -14,7 +14,7 @@ public class JwtTest {
     @Test
     public void getToken(){
         int expMinute = 1;
-        String jwt = jwtUtil.createJwt("aaa", "USER", expMinute);
+        String jwt = jwtUtil.createJwt("access","aaa", "USER", expMinute);
         // get Token Assertion
         Assertions.assertNotNull(jwt);
         System.out.println("token: " + jwt);

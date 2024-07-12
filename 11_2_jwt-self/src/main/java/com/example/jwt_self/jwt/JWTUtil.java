@@ -28,7 +28,7 @@ public class JWTUtil {
     }
 
     // 토큰 생성
-    public String createJwt(String username, String role, int expiredMinute){
+    public String createJwt(String category, String username, String role, int expiredMinute){
         // iat, exp를 위한 Date 및 Calendar
         Calendar expCalendar = Calendar.getInstance();
         expCalendar.add(Calendar.MINUTE, Math.toIntExact(expiredMinute));
@@ -36,12 +36,19 @@ public class JWTUtil {
         Date expDate = expCalendar.getTime();
 
         return Jwts.builder()
+                .claim("category", category)
                 .claim("username", username)
                 .claim("role", role)
                 .issuedAt(iatDate)
                 .expiration(expDate)
                 .signWith(secretKey)
                 .compact();
+    }
+
+    // 토큰 검증 - 카테고리
+    public String getCategory(String token){
+        Jws<Claims> jws =  Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+        return jws.getPayload().get("category", String.class);
     }
 
     // 토큰 검증 - 아이디
