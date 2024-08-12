@@ -72,20 +72,6 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-//        // 토큰 생성
-//        CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
-//        String jwtToken = jwtUtil.createJwt(userDetails.getUsername(), userDetails.getRole(), 1);
-//
-//
-//        // 토큰을 JSON 형태로 변경
-//        JwtDto jwtDto = new JwtDto("Bearer " + jwtToken);
-//        String jsonResponse = objectMapper.writeValueAsString(jwtDto);
-//
-//        // JSON 타입 객체 응답
-//        response.setContentType("application/json");
-//        response.getWriter().write(jsonResponse);
-
-
         // Refresh token 구현
         String username = authResult.getName();
         String role = authResult.getAuthorities().stream().findAny().get().getAuthority();
@@ -109,7 +95,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         RefreshEntity refreshEntity = new RefreshEntity();
         refreshEntity.setUsername(username);
         refreshEntity.setRefresh(refresh);
-        refreshEntity.setRefresh(date.toString());
+        refreshEntity.setExpiration(date.toString());
 
         refreshRepository.save(refreshEntity);
     }
@@ -118,8 +104,6 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     Cookie createCookie(String key, String value){
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(12*60*60); // 12h
-//        cookie.setSecure(true);
-//        cookie.setPath("/");
         cookie.setHttpOnly(true);   //JS로 접근 불가, 탈취 위험 감소
         return cookie;
     }

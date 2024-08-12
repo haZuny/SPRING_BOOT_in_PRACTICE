@@ -73,7 +73,7 @@ public class ReissueController {
         RefreshEntity refreshEntity = new RefreshEntity();
         refreshEntity.setUsername(username);
         refreshEntity.setRefresh(refresh);
-        refreshEntity.setRefresh(date.toString());
+        refreshEntity.setExpiration(date.toString());
 
         refreshRepository.save(refreshEntity);
     }
@@ -81,8 +81,6 @@ public class ReissueController {
     Cookie createCookie(String key, String value){
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(12*60*60); // 12h
-//        cookie.setSecure(true);
-//        cookie.setPath("/");
         cookie.setHttpOnly(true);   //JS로 접근 불가, 탈취 위험 감소
         return cookie;
     }
