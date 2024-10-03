@@ -33,3 +33,7 @@ jobs:
         run: |
           echo $GITHUB_SHA
           echo $GITHUB_REPOSITORY
+
+      - name: 시크릿 출력
+        run: |
+          echo ${{secret.MY_PASSWORD}}
