@@ -1,14 +1,31 @@
+# Workflow 이름
 name: Github Action Start
 
+# Workflow 실행 조건
+# main 브랜치에 push 동작이 발생하면 workflow 실행
 on:
   push:
     branches:
       - main
 
+# 하나의 workflow는 여러개의 job을 가짐
+# job: 실행단위
+# 하나 이상의 Job은 병렬적(동기적)으로 실행
 jobs:
+  # Job 이름
   My-Deploy-Job:
+    # 실행 환경(os)
+    # 우분투 최신버전에서 실행
     runs-on: ubuntu-latest
 
+    # 하나의 Job은 여러개의 setp을 가짐
+    # Step: 특정 작업을 수행하는 가장 작은 단위
     steps:
       - name: Hello World 찍기
         run: echo "Hello World"
+    
+    steps:
+      - name: 여러 명령들 실행
+      run: |
+      echo "Good"
+      echo "Morning"
