@@ -26,6 +26,6 @@ jobs:
     
     steps:
       - name: 여러 명령들 실행
-      run: |
-      echo "Good"
-      echo "Morning"
+        run: |
+        echo "Good"
+        echo "Morning"
